@@ -1,0 +1,7 @@
+{
+  "name": "ecoReporte",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
