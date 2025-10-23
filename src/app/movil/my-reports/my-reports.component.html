@@ -1,0 +1,32 @@
+<ion-content class="ion-padding">
+  <div class="botones-container">
+    <ion-button fill="outline" color="primary" class="boton-reportes">Mis Reportes</ion-button>
+    <ion-button color="success" class="boton-nuevo" routerLink="/dashboard/create">Nuevo Reporte</ion-button>
+  </div>
+
+  <div class="reportes-section">
+    <h2>Reportes finalizados</h2>
+    @for (report of reports; track $index) {
+    <ion-card class="reporte-card" >
+      <div class="reporte-header">
+        <!--circulo rojo-->
+        @if(report.reportStatus.name == 'Rechazado') {
+        <div class="circulo-rojo" style="width: 20px; height: 20px; background-color: red; border-radius: 50%; display: inline-block;"></div>
+        }
+        @else {
+        <div class="circulo-rojo" style="width: 20px; height: 20px; background-color: blue; border-radius: 50%; display: inline-block;"></div>
+        }
+     
+
+        <span>Reporte {{ report.id }}</span>
+      </div>
+      <div class="reporte-detalle">
+        <p><strong>Status:</strong> {{ report.reportStatus.name }}</p>
+        <p><strong>Tipo:</strong> {{ report.reportType.name }}</p>
+        <p><strong>Descripción:</strong> {{ report.description }}</p>
+        <p><strong>Fecha:</strong> {{ report.createdAt }}</p>
+      </div>
+    </ion-card>
+  }
+  </div>
+</ion-content>

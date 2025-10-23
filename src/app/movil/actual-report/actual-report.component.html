@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/dashboard/home"></ion-back-button>
+      </ion-buttons>
+      <ion-title>dashboard</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="logOut()">
+           <ion-icon name="log-out-outline" style="font-size: 60px;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+<ion-content class="ion-padding">
+  <div class="botones-container">
+    <ion-button fill="outline" color="primary" class="boton-reportes">Mis Reportes</ion-button>
+    <ion-button color="success" class="boton-nuevo" routerLink="/dashboard/create">Nuevo Reporte</ion-button>
+  </div>
+
+  <div class="reportes-section">
+    <h1>Reportes actuales</h1>
+    @if (reports.length == 0) {
+      <div style="text-align: center;">
+        <h1>No tienes reportes en curso.</h1>
+      </div>
+    }
+@for (report of reports; track $index) {
+    <ion-card class="reporte-card">
+      <div class="reporte-header">
+        @if (report.reportStatus.name == "Pendiente") {
+           <div class="circulo-rojo" style="width: 20px; height: 20px; background-color: green; border-radius: 50%; display: inline-block;"></div>
+        }
+        @else{
+            <div class="circulo-rojo" style="width: 20px; height: 20px; background-color: yellow; border-radius: 50%; display: inline-block;"></div>
+        }
+        <span>Reporte {{ report.id }}</span>
+      </div>
+      <div class="reporte-detalle">
+        <p><strong>Status:</strong> {{ report.reportStatus.name }}</p>
+        <p><strong>Tipo:</strong> {{ report.reportType.name }}</p>
+        <p><strong>Descripción:</strong> {{ report.description }}</p>
+        <p><strong>Fecha:</strong> {{ report.createdAt }}</p>
+      </div>
+    </ion-card>
+    }
+  </div>
+</ion-content>
