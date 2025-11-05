@@ -8,16 +8,18 @@
   </ion-header>
 
   <ion-content class="ion-padding">
-    <form>
+    <form [formGroup]="createReportForm" (ngSubmit)="createReport()"> 
       <ion-item lines="none">
         <ion-label position="stacked">Descripción:</ion-label>
-        <ion-textarea placeholder="Escribe aquí..." rows="4"></ion-textarea>
+        <ion-textarea placeholder="Escribe aquí..." rows="4" formControlName="description"></ion-textarea>
       </ion-item>
 
       <ion-item lines="none">
         <ion-label position="stacked" >Tipo de Reporte</ion-label>
-        <ion-select placeholder="Seleccionar tipo">
-          <ion-select-option *ngFor="let type of reportTypes" [value]="type.id">{{ type.name }}</ion-select-option>
+        <ion-select placeholder="Seleccionar tipo" formControlName="report_type_id">
+          @for (type of reportTypes; track $index) {
+          <ion-select-option value="{{type.id}}">{{ type.name }}</ion-select-option>
+          }
         </ion-select>
       </ion-item>
 
@@ -28,7 +30,7 @@
         <img class="preview-img" src="https://images.unsplash.com/photo-1503264116251-35a269479413?w=600" alt="preview">
       </div>
 
-      <ion-button expand="block" shape="round" class="boton-siguiente">
+      <ion-button expand="block" shape="round" class="boton-siguiente" type="submit">
         Siguiente
       </ion-button>
     </form>

@@ -24,5 +24,6 @@ export class Auth {
   }
   clearToken(): void {
     localStorage.removeItem(this.token);
+    localStorage.removeItem(environment.storageNames.user);
   }
 }

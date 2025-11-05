@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { reports } from '../../interfaces/reports';
 import { reportType } from '../../interfaces/reportType';
+import { responseMessage } from '../../interfaces/responseMessage';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,8 @@ export class Report {
   }
   reportsfinishedpending(): Observable<reports[]> {
     return this.http.get<reports[]>(this.apiUrl+'/reportsfinishedpending');
+  }
+  createReport(reportData: FormData): Observable<responseMessage> {
+    return this.http.post<responseMessage>(this.apiUrl + '/reports', reportData);
   }
 }

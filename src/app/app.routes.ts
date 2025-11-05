@@ -4,6 +4,10 @@ import { DashboardComponent } from './movil/dashboard/dashboard.component';
 import { ActualReportComponent } from './movil/actual-report/actual-report.component';
 import { CreateReportComponent } from './movil/create-report/create-report.component';
 import { MyReportsComponent } from './movil/my-reports/my-reports.component';
+import { ProfileComponent } from './movil/profile/profile.component';
+import { deviceGuard } from './core/guards/device/device-guard';
+import { NotAllowedDivaceComponent } from './errors/not-allowed-divace/not-allowed-divace.component';
+import { DashboardComponent as webDashboardComponent } from './web/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -11,8 +15,17 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: 'not-allowed-device',
+    component: NotAllowedDivaceComponent
+  },
+  {
+    path: 'web',
+    component: webDashboardComponent
+  },
+  {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [deviceGuard],
     children: [
       {
         path: 'home',
@@ -27,9 +40,13 @@ export const routes: Routes = [
         component: MyReportsComponent
       },
       {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full'
+        pathMatch: 'full',
       }
     ]
   }

@@ -15,14 +15,14 @@ import {
   templateUrl: './my-reports.component.html',
   styleUrls: ['./my-reports.component.css'],
   imports: [
-IonContent,
-  IonButton,
-  IonCard,
-  CommonModule,
-  RouterLink]
+    IonContent,
+    IonButton,
+    IonCard,
+    CommonModule,
+    RouterLink]
 
 })
-export class MyReportsComponent  implements OnInit {
+export class MyReportsComponent implements OnInit {
 
   constructor(private reportService: Report) { }
   reports: reports[] = [];

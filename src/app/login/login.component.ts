@@ -1,25 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonInput, IonButton, IonItem, IonLabel, IonContent, IonHeader, IonToolbar, IonTitle , } from '@ionic/angular/standalone';
-import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { token } from '../core/interfaces/token';
 import { Auth } from '../core/services/auth/auth';
+import { User } from '../core/services/user/user';
+import { user } from '../core/interfaces/user';
 import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
+import { IonContent, IonInput, IonButton } from "@ionic/angular/standalone";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [RouterLink,CommonModule, IonInput, IonButton, IonItem, IonLabel, IonContent, IonHeader, IonToolbar, IonTitle,ReactiveFormsModule]
+  imports: [IonButton,
+    IonInput,
+    IonContent,
+    CommonModule,
+    ReactiveFormsModule
+  ]
 })
-export class LoginComponent  implements OnInit {
+export class LoginComponent implements OnInit {
 
-  constructor(private authService: Auth, private router: Router) { }
+  constructor(private authService: Auth, private router: Router, private userService: User) { }
 
-  ngOnInit() {}
-
+  ngOnInit() { }
+  userProfile: user | null = null;
   loginForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
@@ -31,10 +38,36 @@ export class LoginComponent  implements OnInit {
     }
     this.authService.login(this.loginForm.value.email!, this.loginForm.value.password!).subscribe({
       next: (token: token) => {
-      this.authService.setToken(token.token);
-      console.log('Login exitoso, token almacenado');
-      (document.activeElement as HTMLElement)?.blur();
-      this.router.navigate(['dashboard']);
+        this.authService.setToken(token.token);
+        console.log('Login exitoso, token almacenado');
+        this.userService.getUserProfile().subscribe(
+          {
+            next: (user) => {
+              this.userProfile = user;
+              localStorage.setItem(environment.storageNames.user, JSON.stringify(user));
+              localStorage.setItem(environment.typeProfile, this.userProfile.roleId.toString());
+              if (localStorage.getItem(environment.typeProfile) === '2') {
+                if (environment.device == 1) {
+                  this.router.navigate(['/dashboard']);
+                } else {
+                  this.router.navigate(['/not-allowed-device']);
+                }
+              }
+              if (localStorage.getItem(environment.typeProfile) === '1') {
+                if (environment.device == 0) {
+                  this.router.navigate(['/web']);
+                } else {
+                  this.router.navigate(['/not-allowed-device']);
+                }
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching user profile', error);
+            }
+          }
+        );
+        (document.activeElement as HTMLElement)?.blur();
+
       },
       error: (error) => {
         console.error('Error en el login', error);

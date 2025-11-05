@@ -11,13 +11,13 @@ import {
   IonToolbar,
   IonButton,
   IonCard,
-  IonButtons, IonIcon } from '@ionic/angular/standalone';
+  IonButtons } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-actual-report',
   templateUrl: './actual-report.component.html',
   styleUrls: ['./actual-report.component.css'],
-  imports: [IonIcon,  IonButtons, 
+  imports: [  IonButtons, 
      IonContent,
     IonHeader,
     IonTitle,
