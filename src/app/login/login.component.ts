@@ -46,16 +46,9 @@ export class LoginComponent implements OnInit {
               this.userProfile = user;
               localStorage.setItem(environment.storageNames.user, JSON.stringify(user));
               localStorage.setItem(environment.typeProfile, this.userProfile.roleId.toString());
-              if (localStorage.getItem(environment.typeProfile) === '2') {
+              if (this.userProfile.roleId === 2) {
                 if (environment.device == 1) {
                   this.router.navigate(['/dashboard']);
-                } else {
-                  this.router.navigate(['/not-allowed-device']);
-                }
-              }
-              if (localStorage.getItem(environment.typeProfile) === '1') {
-                if (environment.device == 0) {
-                  this.router.navigate(['/web']);
                 } else {
                   this.router.navigate(['/not-allowed-device']);
                 }

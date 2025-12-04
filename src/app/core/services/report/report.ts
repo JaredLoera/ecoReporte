@@ -27,4 +27,7 @@ export class Report {
   createReport(reportData: FormData): Observable<responseMessage> {
     return this.http.post<responseMessage>(this.apiUrl + '/reports', reportData);
   }
+  getAllReports(): Observable<reports[]> {
+    return this.http.get<reports[]>(this.apiUrl + '/reports');
+  }
 }
