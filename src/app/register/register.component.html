@@ -1,0 +1,26 @@
+<ion-content class="login-page">
+  <div class="login-container">
+    <img src="../../assets/Logo.jpeg" alt="Logo" class="logo" />
+    <h1 class="title">ECO-Reporte</h1>
+    <p class="subtitle">Registra tu cuenta</p>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <label for="full_name">Nombre completo: </label>
+      <ion-input type="text" formControlName="full_name" />
+        <label for="age">edad: </label>
+        <ion-input id="age" type="text" formControlName="age" class="email-input" />
+        <label for="curp">Curp: </label>
+        <ion-input id="curp" type="text" formControlName="curp" class="email-input" />
+      <label for="email">Correo electrónico: </label>
+      <ion-input id="email" type="email" formControlName="email" class="email-input" />
+      <label for="password">password: </label>
+      <ion-input id="password" type="password" formControlName="password" />
+      <label for="confirmPassword">Confirmar contraseña: </label>
+      <ion-input id="confirmPassword" type="password" (keyup)="confirmPassword()" formControlName="confirmPassword" />
+      @if (!passwordMatch) {
+        <p style="color: red;">Las contraseñas no coinciden.</p>
+      }
+      <ion-button type="submit" [disabled]="!registerForm.valid" class="login-button">Registrar</ion-button>
+      <ion-button routerLink="" class="login-button-login">Iniciar sesión</ion-button>
+    </form>
+  </div>
+</ion-content>

@@ -1,10 +1,11 @@
 export interface user {
-    id:        number;
-    fullName:  string;
+    id?:        number;
+    full_name:  string;
     email:     string;
-    roleId:    number;
-    age:       number;
+    roleId?:    number;
+    age?:       string;
     curp:      string;
-    createdAt: Date;
-    updatedAt: Date;
+    password?:  string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

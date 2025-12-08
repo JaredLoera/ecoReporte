@@ -8,6 +8,7 @@ import { user } from '../core/interfaces/user';
 import { Router } from '@angular/router';
 import { IonContent, IonInput, IonButton } from "@ionic/angular/standalone";
 import { environment } from 'src/environments/environment';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,9 @@ import { environment } from 'src/environments/environment';
     IonInput,
     IonContent,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
+    
   ]
 })
 export class LoginComponent implements OnInit {
@@ -45,7 +48,7 @@ export class LoginComponent implements OnInit {
             next: (user) => {
               this.userProfile = user;
               localStorage.setItem(environment.storageNames.user, JSON.stringify(user));
-              localStorage.setItem(environment.typeProfile, this.userProfile.roleId.toString());
+              localStorage.setItem(environment.typeProfile, this.userProfile.roleId!.toString());
               if (this.userProfile.roleId === 2) {
                 if (environment.device == 1) {
                   this.router.navigate(['/dashboard']);

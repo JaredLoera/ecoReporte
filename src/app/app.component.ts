@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,16 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  constructor() {}
+
+     constructor(private swUpdate: SwUpdate) {
+    this.swUpdate.versionUpdates.subscribe(event => {
+      if (event.type === 'VERSION_READY') {
+        if (confirm('Nueva versión disponible. ¿Desea actualizar?')) {
+          window.location.reload();
+        }
+      }
+    });
+  }
 }
 
  if (typeof Worker !== 'undefined') {

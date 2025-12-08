@@ -7,6 +7,7 @@ import { MyReportsComponent } from './movil/my-reports/my-reports.component';
 import { ProfileComponent } from './movil/profile/profile.component';
 import { deviceGuard } from './core/guards/device/device-guard';
 import { NotAllowedDivaceComponent } from './errors/not-allowed-divace/not-allowed-divace.component';
+import { RegisterComponent } from './register/register.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,10 @@ export const routes: Routes = [
   {
     path: 'not-allowed-device',
     component: NotAllowedDivaceComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: 'dashboard',
