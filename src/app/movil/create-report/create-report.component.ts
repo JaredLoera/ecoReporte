@@ -43,11 +43,15 @@ import { responseMessage } from 'src/app/core/interfaces/responseMessage';
 })
 export class CreateReportComponent implements OnInit {
 
-  constructor(private reportService: Report) {
+  constructor(private reportService: Report) { }
 
-  }
   reportTypes: reportType[] = [];
   user: user | null = null;
+
+
+  currentLatitude: number | null = null;
+  currentLongitude: number | null = null;
+
 
   ngOnInit() {
     this.reportService.getReportsTypes().subscribe(types => {
@@ -57,7 +61,36 @@ export class CreateReportComponent implements OnInit {
     if (storedUser) {
       this.user = JSON.parse(storedUser);
     }
+    this.getCurrentLocation();
   }
+
+  getCurrentLocation() {
+    if (navigator.geolocation) {
+      // Solicita la posición actual
+      navigator.geolocation.getCurrentPosition(
+        // Éxito: Cuando la ubicación es obtenida
+        (position) => {
+          this.currentLatitude = position.coords.latitude;
+          this.currentLongitude = position.coords.longitude;
+          console.log('Ubicación obtenida:', this.currentLatitude, this.currentLongitude);
+        },
+        // Error: Cuando hay un problema (ej. el usuario deniega el permiso)
+        (error) => {
+          console.error('Error al obtener la ubicación:', error);
+          // Opcional: Asignar valores por defecto o mostrar un mensaje al usuario
+        },
+        // Opciones (Opcional)
+        {
+          enableHighAccuracy: true, // Solicita la mejor precisión posible
+          timeout: 10000,           // Aumentado a 10 segundos (10000 ms)          maximumAge: 0            // No usar una posición almacenada en caché
+        maximumAge: 0
+        }
+      );
+    } else {
+      console.error('El navegador no soporta la API de Geolocation.');
+    }
+  }
+
 
 
   createReportForm = new FormGroup({
@@ -66,7 +99,7 @@ export class CreateReportComponent implements OnInit {
   });
 
   async createReport() {
-    if(!this.user){
+    if (!this.user) {
       console.error('Usuario no disponible');
       return;
     }
