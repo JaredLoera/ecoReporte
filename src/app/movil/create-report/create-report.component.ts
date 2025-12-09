@@ -110,7 +110,7 @@ usePhotoGallery() {
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
-      quality: 100,
+      quality: 80,
     });
   };
 
@@ -167,7 +167,8 @@ usePhotoGallery() {
       report_status_id: 1, // Asignar estado inicial
       description: formData.description,
       latitude: this.currentLatitude?.toString() || '', // Obtener latitud real
-      longitude: this.currentLongitude?.toString() || '' // Obtener longitud real
+      longitude: this.currentLongitude?.toString() || '', // Obtener longitud real
+      photos: this.photos // Incluir las fotos tomadas
     };
     const reportFormData = new FormData();
     reportFormData.append('json', JSON.stringify(reportData));
