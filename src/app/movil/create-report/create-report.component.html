@@ -23,7 +23,6 @@
         </ion-select>
       </ion-item>
 
-   
       <ion-item lines="none" class="ion-margin-top">
       <ion-button expand="block" (click)="takePicture()">
         <ion-icon slot="start" name="camera-outline"></ion-icon>
@@ -32,12 +31,16 @@
     </ion-item>
 
     <div class="photos-container ion-padding-top">
-      <div *ngIf="photos.length === 0" class="no-photos-placeholder">
-        No hay fotos tomadas aún.
-      </div>
-      <div *ngFor="let photo of photos; let i = index" class="photo-thumbnail">
-        <ion-img [src]="photo.webPath" alt="Foto del reporte {{i + 1}}"></ion-img>
+      @if (photos.length === 0) {
+        <div class="no-photos-placeholder">
+          No hay fotos tomadas aún.
         </div>
+      }
+      @for (photo of photos; track $index) {
+        <div class="photo-thumbnail">
+          <ion-img [src]="photo.webPath" alt="Foto del reporte {{ $index + 1 }}"></ion-img>
+        </div>
+      }
     </div>
 
       <ion-button expand="block" shape="round" class="boton-siguiente" type="submit">
