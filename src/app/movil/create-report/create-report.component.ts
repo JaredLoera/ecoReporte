@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { user } from 'src/app/core/interfaces/user';
 import { environment } from 'src/environments/environment';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+
 import {
   IonContent,
   IonHeader,
@@ -15,11 +16,19 @@ import {
   IonItem,
   IonTextarea,
   IonButtons,
-  IonBackButton
+  IonBackButton,
+  IonList, // Agrega este si no está para el diseño de lista
+  IonThumbnail, // Para mostrar miniaturas de imágenes
+  IonImg, // Para mostrar imágenes
+  IonIcon // Para el icono de la cámara
 } from '@ionic/angular/standalone';
 import { Report } from 'src/app/core/services/report/report';
 import { reportType } from 'src/app/core/interfaces/reportType';
 import { responseMessage } from 'src/app/core/interfaces/responseMessage';
+// 🚨 Importar Capacitor Camera
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { addIcons } from 'ionicons'; // Para agregar iconos
+import { cameraOutline } from 'ionicons/icons'; // Importar el icono de la cámara
 @Component({
   selector: 'app-create-report',
   templateUrl: './create-report.component.html',
@@ -38,16 +47,24 @@ import { responseMessage } from 'src/app/core/interfaces/responseMessage';
     IonTextarea,
     IonButtons,
     IonBackButton,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IonImg,
+    IonIcon
   ]
 })
 export class CreateReportComponent implements OnInit {
 
-  constructor(private reportService: Report) { }
+  constructor(private reportService: Report) {
+    addIcons({ cameraOutline });
+   }
 
   reportTypes: reportType[] = [];
   user: user | null = null;
 
+
+  photos: Photo[] = [];
+
+  
 
   currentLatitude: number | null = null;
   currentLongitude: number | null = null;
@@ -63,6 +80,44 @@ export class CreateReportComponent implements OnInit {
     }
     this.getCurrentLocation();
   }
+
+
+  async takePicture() {
+    try {
+      const photo = await Camera.getPhoto({
+        quality: 90, // Calidad de la imagen (0-100)
+        allowEditing: false, // Permitir edición (recorte)
+        resultType: CameraResultType.Uri, // Retorna una URI (URL para mostrar la imagen)
+        source: CameraSource.Camera, // Usar la cámara (también puede ser 'Photos' para galería)
+        saveToGallery: false // No guardar en la galería automáticamente
+      });
+
+      // 🚨 Agrega la foto al array
+      if (photo) {
+        this.photos.push(photo);
+        console.log('Foto tomada:', photo);
+      }
+
+    } catch (error) {
+      console.error('Error al tomar la foto:', error);
+      // Puedes mostrar un toast o alert al usuario aquí
+    }
+  }
+
+usePhotoGallery() {
+  const addNewToGallery = async () => {
+    // Take a photo
+    const capturedPhoto = await Camera.getPhoto({
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera,
+      quality: 100,
+    });
+  };
+
+  return {
+    addNewToGallery,
+  };
+}
 
   getCurrentLocation() {
     if (navigator.geolocation) {
@@ -96,6 +151,8 @@ export class CreateReportComponent implements OnInit {
   createReportForm = new FormGroup({
     description: new FormControl(''),
     report_type_id: new FormControl(''),
+    latitude: new FormControl(''),
+    longitude: new FormControl('')
   });
 
   async createReport() {
@@ -109,8 +166,8 @@ export class CreateReportComponent implements OnInit {
       report_type_id: parseInt(formData.report_type_id!),
       report_status_id: 1, // Asignar estado inicial
       description: formData.description,
-      latitude: '25.564978744932137', // Obtener latitud real
-      longitude: '-103.28239736897521' // Obtener longitud real
+      latitude: this.currentLatitude?.toString() || '', // Obtener latitud real
+      longitude: this.currentLongitude?.toString() || '' // Obtener longitud real
     };
     const reportFormData = new FormData();
     reportFormData.append('json', JSON.stringify(reportData));
