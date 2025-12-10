@@ -11,14 +11,15 @@ import {
   IonToolbar,
   IonButton,
   IonCard,
-  IonButtons, IonTabButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
+  IonButtons, IonTabButton, IonIcon, IonLabel
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-actual-report',
   templateUrl: './actual-report.component.html',
   styleUrls: ['./actual-report.component.css'],
-  imports: [IonLabel, IonIcon, IonTabButton,   IonButtons, 
-     IonContent,
+  imports: [IonIcon, IonButtons,
+    IonContent,
     IonHeader,
     IonTitle,
     IonToolbar,
@@ -28,17 +29,17 @@ import {
     RouterLink,
     IonButton,
     IonButton,
-     IonBackButton
+
   ]
 })
-export class ActualReportComponent  implements OnInit {
+export class ActualReportComponent implements OnInit {
 
   constructor(private reportService: Report) { }
 
   reports: reports[] = [];
 
   ngOnInit() {
-     this.reportService.getMyReports().subscribe({
+    this.reportService.getMyReports().subscribe({
       next: (data: reports[]) => {
         this.reports = data;
       },
@@ -51,7 +52,7 @@ export class ActualReportComponent  implements OnInit {
   logOut() {
     console.log('Logging out...');
   }
- requestPermission(): void {
+  requestPermission(): void {
     console.log('Solicitando permiso para notificaciones...');
     try {
       // 1. Verificar si la API es soportada (opcional pero buena práctica)
