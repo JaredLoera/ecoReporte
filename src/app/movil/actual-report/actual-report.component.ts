@@ -11,13 +11,13 @@ import {
   IonToolbar,
   IonButton,
   IonCard,
-  IonButtons } from '@ionic/angular/standalone';
+  IonButtons, IonTabButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-actual-report',
   templateUrl: './actual-report.component.html',
   styleUrls: ['./actual-report.component.css'],
-  imports: [  IonButtons, 
+  imports: [IonLabel, IonIcon, IonTabButton,   IonButtons, 
      IonContent,
     IonHeader,
     IonTitle,
@@ -50,5 +50,27 @@ export class ActualReportComponent  implements OnInit {
 
   logOut() {
     console.log('Logging out...');
+  }
+ requestPermission(): void {
+    console.log('Solicitando permiso para notificaciones...');
+    try {
+      // 1. Verificar si la API es soportada (opcional pero buena práctica)
+      if (!('Notification' in window)) {
+        console.error('Este navegador no soporta notificaciones de escritorio.');
+        return;
+      }
+      // 2. Solicitar el permiso
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log('Permiso para notificaciones concedido.');
+          // Aquí puedes llamar a tu función para crear la notificación inicial
+        } else {
+          console.log('Permiso para notificaciones denegado:', permission);
+        }
+      });
+    } catch (error) {
+      // Captura si hay errores de seguridad (a veces el navegador tira un error en lugar de un 'denied')
+      console.error('Error al solicitar permiso:', error);
+    }
   }
 }

@@ -8,11 +8,19 @@ import { ProfileComponent } from './movil/profile/profile.component';
 import { deviceGuard } from './core/guards/device/device-guard';
 import { NotAllowedDivaceComponent } from './errors/not-allowed-divace/not-allowed-divace.component';
 import { RegisterComponent } from './register/register.component';
+import { authGuard } from './core/guards/auth/auth-guard';
+import { VerifyCodeComponent } from './verify-code/verify-code.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [authGuard]
+  },
+  // Ruta para la verificación de código con correo en url
+  {
+    path: 'verify-code/:email',
+    component: VerifyCodeComponent
   },
   {
     path: 'not-allowed-device',
@@ -20,7 +28,8 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'dashboard',

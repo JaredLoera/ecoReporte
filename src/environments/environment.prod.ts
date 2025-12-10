@@ -1,6 +1,6 @@
 export const environment = {
       production: true,
-apiUrl: 'https://api.buenasnochis.online/api',
+  apiUrl: 'https://api.buenasnochis.online/api',
   storageNames: {
     token: "token",
     user: "user",

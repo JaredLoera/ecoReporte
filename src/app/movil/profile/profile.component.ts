@@ -14,6 +14,7 @@ import {
   IonItem, 
   IonButtons,
   IonBackButton } from "@ionic/angular/standalone";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -36,7 +37,7 @@ import {
 export class ProfileComponent implements OnInit {
   user: user | null = null;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() { 
     const storedUser = localStorage.getItem(environment.storageNames.user);
@@ -44,5 +45,15 @@ export class ProfileComponent implements OnInit {
       this.user = JSON.parse(storedUser);
     }
   }
-
+logout(): void {
+    // 1. Eliminar el token
+    localStorage.removeItem(environment.storageNames.token);
+    
+    // 2. Eliminar la información del usuario
+    localStorage.removeItem(environment.storageNames.user);
+    localStorage.removeItem(environment.typeProfile);
+    
+    // 3. Redirigir al login
+    this.router.navigate(['/']);
+  }
 }

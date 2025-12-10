@@ -3,7 +3,7 @@
   "short_name": "EcoReport",  
   "description": "Una aplicación para reportar incidentes ambientales.",
   "start_url": "/",
-  "display": "fullscreen",
+   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
   "icons": [
