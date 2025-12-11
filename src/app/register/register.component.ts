@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { IonContent, IonInput, IonButton } from "@ionic/angular/standalone";
 import { environment } from 'src/environments/environment';
 import { RouterLink } from '@angular/router';
-
+declare var grecaptcha: any;
 
 @Component({
   selector: 'app-register',
@@ -17,10 +17,15 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./register.component.css'],
     imports: [IonButton, IonInput, IonContent, ReactiveFormsModule, RouterLink]
 })
-export class RegisterComponent  implements OnInit {
 
+
+export class RegisterComponent  implements OnInit {
+  siteKey = '6LdN8CcsAAAAAF7SKKOrm8xuEgDG13SyExIVrA-x';
+  captchaToken: string | null = null;
+  result: boolean = false;
   constructor(private router: Router, private userService: User) { }
 
+  
   passwordMatch: boolean = true;
   ngOnInit() { }
   userProfile: user | null = null;
@@ -33,25 +38,9 @@ export class RegisterComponent  implements OnInit {
     confirmPassword: new FormControl(''),
   });
   async register() {
-    if (this.registerForm.invalid || !this.passwordMatch) {
-      return;
+    if (this.registerForm.valid && this.passwordMatch) {
+    
     }
-    this.userProfile = {
-
-      full_name: this.registerForm.value.full_name!,
-      email: this.registerForm.value.email!,
-      age: this.registerForm.value.age!.toString(),
-      curp: this.registerForm.value.curp!,
-      password: this.registerForm.value.password!,
-    }
-    this.userService.createUser(this.userProfile).subscribe({
-      next: (response) => {
-        this.router.navigate(['']);
-      },
-      error: (error) => {
-        console.error('Error registrando usuario', error);
-      }
-    });
   }
   //keyUpdate to confirm password
   confirmPassword() {
@@ -60,5 +49,33 @@ export class RegisterComponent  implements OnInit {
     const confirmPassword = this.registerForm.value.confirmPassword;
     this.passwordMatch = password === confirmPassword;
   }
+ngAfterViewInit() {
+    // Renderiza el captcha manualmente
+    setTimeout(() => {
+      grecaptcha.render(document.querySelector('.g-recaptcha'), {
+        sitekey: this.siteKey,
+        callback: (response: string) => {
+          this.captchaToken = response;
+        }
+      });
+    }, 500);
+  }
+  
 
+  resolved(captchaResponse: Event) {
+    if (captchaResponse) {
+      this.captchaToken = (captchaResponse as any).detail;
+    } else {
+      this.captchaToken = null;
+    }
+  }
+
+  onSubmit() {
+    this.result = this.captchaToken ? true : false;
+    if (this.result) {
+      console.log('Captcha verificado con éxito.');
+    } else {
+      console.log('Fallo en la verificación del captcha.');
+    }
+  }
 }

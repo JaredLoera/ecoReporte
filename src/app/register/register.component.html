@@ -19,6 +19,13 @@
       @if (!passwordMatch) {
         <p style="color: red;">Las contraseñas no coinciden.</p>
       }
+        <div
+    class="g-recaptcha"
+    [attr.data-sitekey]="siteKey"
+    (resolved)="resolved($event)">
+  </div>
+
+  <button type="submit">Enviar</button>
       <ion-button type="submit" [disabled]="!registerForm.valid" class="login-button">Registrar</ion-button>
       <ion-button routerLink="" class="login-button-login">Iniciar sesión</ion-button>
     </form>
